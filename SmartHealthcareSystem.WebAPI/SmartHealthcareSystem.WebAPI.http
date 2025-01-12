@@ -1,0 +1,6 @@
+@SmartHealthcareSystem.WebAPI_HostAddress = http://localhost:5188
+
+GET {{SmartHealthcareSystem.WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
