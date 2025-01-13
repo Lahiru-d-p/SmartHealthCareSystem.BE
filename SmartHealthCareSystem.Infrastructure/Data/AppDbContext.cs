@@ -4,16 +4,23 @@ namespace SmartHealthCareSystem.Infrastructure.Data;
 
 public class AppDbContext : DbContext
 {
-    public DbSet<Patient> Patients { get; set; }
-
-
-
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
+    public DbSet<Patient> Patients { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Doctor> Doctors { get; set; }
+    public DbSet<Appointment> Appointments { get; set; }
+    public DbSet<DoctorAvailability> DoctorAvailabilities { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Patient>(entity =>
+        modelBuilder.Entity<User>()
+            .HasDiscriminator<string>("UserType")
+            .HasValue<Patient>("Patient")
+            .HasValue<Doctor>("Doctor");
+
+        modelBuilder.Entity<User>(entity =>
         {
             entity.OwnsOne(p => p.Address, address =>
             {
@@ -23,5 +30,20 @@ public class AppDbContext : DbContext
                 address.Property(a => a.ZipCode);
             });
         });
+
+        modelBuilder.Entity<Appointment>()
+            .HasOne(a => a.Patient)
+            .WithMany(p => p.Appointments)
+            .HasForeignKey(a => a.FK_PatientId);
+
+        modelBuilder.Entity<Appointment>()
+            .HasOne(a => a.Doctor)
+            .WithMany(d => d.Appointments)
+            .HasForeignKey(a => a.FK_DoctorId);
+
+        modelBuilder.Entity<DoctorAvailability>()
+            .HasOne(da => da.Doctor)
+            .WithMany(d => d.AvailableTimes)
+            .HasForeignKey(da => da.FK_DoctorId);
     }
 }
