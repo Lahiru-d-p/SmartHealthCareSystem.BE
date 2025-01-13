@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SmartHealthCareSystem.Domain.Entities;
 
-public class Doctor
+public class Doctor :User
 {
     public string Specialty { get; set; } 
     public string LicenseNumber { get; set; } 
