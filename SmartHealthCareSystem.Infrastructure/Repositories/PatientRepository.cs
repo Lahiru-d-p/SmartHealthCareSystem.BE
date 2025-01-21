@@ -20,6 +20,6 @@ public class PatientRepository :IPatientRepository
 
     public async Task<Patient> GetPatientByIdAsync(int id)
     {
-        return null;//await _context.Patients.FindAsync(id);
+        return await _context.Patients.FindAsync(id);
     }
 }
