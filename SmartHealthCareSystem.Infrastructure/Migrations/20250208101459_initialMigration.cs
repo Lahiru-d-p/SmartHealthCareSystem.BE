@@ -21,7 +21,7 @@ namespace SmartHealthCareSystem.Infrastructure.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NIC = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ContactNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ContactEMail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ContactEMail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address_Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address_City = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address_State = table.Column<string>(type: "nvarchar(max)", nullable: true),

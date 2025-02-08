@@ -12,7 +12,7 @@ using SmartHealthCareSystem.Infrastructure.Data;
 namespace SmartHealthCareSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250208094233_initialMigration")]
+    [Migration("20250208101459_initialMigration")]
     partial class initialMigration
     {
         /// <inheritdoc />
@@ -97,6 +97,7 @@ namespace SmartHealthCareSystem.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ContactEMail")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ContactNumber")
