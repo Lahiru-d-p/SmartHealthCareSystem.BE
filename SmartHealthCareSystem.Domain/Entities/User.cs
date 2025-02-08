@@ -15,6 +15,7 @@ public abstract class User
     public int Id { get; set; }
     public string FirstName { get; set; } = default!;
     public string LastName { get; set; } = default!;
+    public string NIC { get; set; } = default!;
     public string ContactNumber { get; set; } = default!;
     public string? ContactEMail { get; set; }
     public Address? Address { get; set; }

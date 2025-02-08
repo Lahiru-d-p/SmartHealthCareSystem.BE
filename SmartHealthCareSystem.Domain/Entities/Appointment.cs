@@ -18,4 +18,6 @@ public class Appointment
     public Doctor Doctor { get; set; }
     public DateTime AppointmentDate { get; set; }
     public string Status { get; set; }
+    public string? Description { get; set; }
+    public string? Prescription { get; set; }
 }

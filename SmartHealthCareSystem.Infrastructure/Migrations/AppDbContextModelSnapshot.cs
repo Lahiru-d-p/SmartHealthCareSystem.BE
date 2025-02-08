@@ -33,11 +33,17 @@ namespace SmartHealthCareSystem.Infrastructure.Migrations
                     b.Property<DateTime>("AppointmentDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("FK_DoctorId")
                         .HasColumnType("int");
 
                     b.Property<int>("FK_PatientId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Prescription")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -99,6 +105,10 @@ namespace SmartHealthCareSystem.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NIC")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
