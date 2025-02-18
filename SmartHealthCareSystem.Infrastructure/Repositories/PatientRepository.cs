@@ -1,11 +1,7 @@
-﻿using SmartHealthCareSystem.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using SmartHealthCareSystem.Domain.Entities;
 using SmartHealthCareSystem.Domain.Interfaces;
 using SmartHealthCareSystem.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartHealthCareSystem.Infrastructure.Repositories;
 
@@ -18,8 +14,18 @@ public class PatientRepository :IPatientRepository
         _context = context;
     }
 
-    public async Task<Patient> GetPatientByIdAsync(int id)
-    {
-        return await _context.Patients.FindAsync(id);
-    }
+	public async Task<Patient> GetPatientByIdAsync(int id) => await _context.Patients.FindAsync(id);
+	public async Task<bool> IsPatientWithEmailAsync(string email)
+	{
+		return await _context.Patients.AnyAsync(u => u.ContactEMail == email);
+	}
+	public async Task<IEnumerable<Patient>> GetAllPatientsAsync() => await _context.Patients.ToListAsync();
+	public async Task<Patient> AddPatientAsync(Patient patient) { await _context.Patients.AddAsync(patient); await _context.SaveChangesAsync(); return patient; }
+	public async Task UpdatePatientAsync(Patient patient) { _context.Patients.Update(patient); await _context.SaveChangesAsync(); }
+	public async Task DeletePatientAsync(int id)
+	{
+		var patient = await _context.Patients.FindAsync(id);
+		if (patient != null) _context.Patients.Remove(patient);
+		await _context.SaveChangesAsync();
+	}
 }

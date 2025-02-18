@@ -29,7 +29,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SmartHealthCareSystem.Application\SmartHealthCareSystem.Application.csproj" />
-    <ProjectReference Include="..\SmartHealthCareSystem.Domain\SmartHealthCareSystem.Domain.csproj" />
     <ProjectReference Include="..\SmartHealthCareSystem.Infrastructure\SmartHealthCareSystem.Infrastructure.csproj" />
   </ItemGroup>
 
