@@ -1,26 +1,21 @@
-using Microsoft.Extensions.Configuration;
 using SmartHealthCareSystem.Application.Services;
-using SmartHealthCareSystem.Domain.Interfaces;
-using SmartHealthCareSystem.Infrastructure.Data;
-using SmartHealthCareSystem.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
 using SmartHealthCareSystem.Application.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using SmartHealthCareSystem.Infrastructure.DI;
+using SmartHealthCareSystem.Common.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configure DbContext with SQL Server
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddInfrastructure(builder.Configuration);
 
-// Register application services and repositories for Dependency Injection
-builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+// Register application services for Dependency Injection
 builder.Services.AddScoped<IPatientService, PatientService>();
 
 // Configure JWT Authentication
@@ -52,6 +47,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// ExceptionHandler middleware
+app.UseMiddleware<ExceptionHandler>();
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -9,5 +9,5 @@ public interface IPatientRepository
 	Task<IEnumerable<Patient>> GetAllPatientsAsync();
 	Task<Patient> AddPatientAsync(Patient patient);
 	Task UpdatePatientAsync(Patient patient);
-	Task DeletePatientAsync(int id);
+	Task DeletePatientAsync(Patient patient);
 }

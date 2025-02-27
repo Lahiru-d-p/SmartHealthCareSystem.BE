@@ -20,12 +20,19 @@ public class PatientRepository :IPatientRepository
 		return await _context.Patients.AnyAsync(u => u.ContactEMail == email);
 	}
 	public async Task<IEnumerable<Patient>> GetAllPatientsAsync() => await _context.Patients.ToListAsync();
-	public async Task<Patient> AddPatientAsync(Patient patient) { await _context.Patients.AddAsync(patient); await _context.SaveChangesAsync(); return patient; }
-	public async Task UpdatePatientAsync(Patient patient) { _context.Patients.Update(patient); await _context.SaveChangesAsync(); }
-	public async Task DeletePatientAsync(int id)
+	public async Task<Patient> AddPatientAsync(Patient patient) 
 	{
-		var patient = await _context.Patients.FindAsync(id);
-		if (patient != null) _context.Patients.Remove(patient);
+		await _context.Patients.AddAsync(patient); 
+		await _context.SaveChangesAsync(); return patient; 
+	}
+	public async Task UpdatePatientAsync(Patient patient)
+	{
+		_context.Patients.Update(patient); 
+		await _context.SaveChangesAsync();
+	}
+	public async Task DeletePatientAsync(Patient patient)
+	{
+		 _context.Patients.Remove(patient);
 		await _context.SaveChangesAsync();
 	}
 }

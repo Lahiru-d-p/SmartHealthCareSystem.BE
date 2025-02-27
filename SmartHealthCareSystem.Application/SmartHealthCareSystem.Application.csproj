@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SmartHealthCareSystem.Common\SmartHealthCareSystem.Common.csproj" />
     <ProjectReference Include="..\SmartHealthCareSystem.Domain\SmartHealthCareSystem.Domain.csproj" />
   </ItemGroup>
 

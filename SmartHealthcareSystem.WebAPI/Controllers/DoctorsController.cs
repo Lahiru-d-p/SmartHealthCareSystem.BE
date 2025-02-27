@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartHealthCareSystem.Application.DTOs;
 using SmartHealthCareSystem.Application.Interfaces;
-using SmartHealthCareSystem.Application.Services;
+using SmartHealthCareSystem.Common.Utilities;
 using SmartHealthCareSystem.Domain.Entities;
-using SmartHealthCareSystem.Infrastructure.Utilities;
 
 namespace SmartHealthcareSystem.WebAPI.Controllers
 {
