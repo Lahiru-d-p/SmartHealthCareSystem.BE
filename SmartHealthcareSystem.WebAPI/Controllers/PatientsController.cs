@@ -51,7 +51,7 @@ namespace SmartHealthcareSystem.WebAPI.Controllers
 
 			var InsertedPatient = await _patientService.AddPatientAsync(patientModel);
 
-			return Ok(new ResponseModel<Patient>(true, "Patient Inserted successfully.", InsertedPatient));
+			return Ok(new ResponseModel<PatientViewModel>(true, "Patient Inserted successfully.", InsertedPatient));
 		}
 
 		//Update Patient
@@ -65,7 +65,7 @@ namespace SmartHealthcareSystem.WebAPI.Controllers
 
 			var updatedPatient = await _patientService.UpdatePatientAsync(patientModel);
 
-			return Ok(new ResponseModel<Patient>(true, "Patient updated successfully.", updatedPatient));
+			return Ok(new ResponseModel<PatientViewModel>(true, "Patient updated successfully.", updatedPatient));
 		}
 
 		//Delete Patient

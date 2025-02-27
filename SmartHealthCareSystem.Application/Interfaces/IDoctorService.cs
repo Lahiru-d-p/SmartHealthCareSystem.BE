@@ -13,9 +13,9 @@ namespace SmartHealthCareSystem.Application.Interfaces
 		//Get Doctor By Id
 		Task<DoctorViewModel> GetDoctorByIdAsync(int id);
 		//Add Doctor
-		Task<Doctor> AddDoctorAsync(DoctorInsertModel doctor);
+		Task<DoctorViewModel> AddDoctorAsync(DoctorInsertModel doctor);
 		//Update Doctor
-		Task<Doctor> UpdateDoctorAsync(DoctorUpdateModel doctor);
+		Task<DoctorViewModel> UpdateDoctorAsync(DoctorUpdateModel doctor);
 		//Delete Doctor
 		Task DeleteDoctorAsync(int id);
 	}

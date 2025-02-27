@@ -22,19 +22,7 @@ public class PatientService : IPatientService
 			var result = await _patientRepository.GetAllPatientsAsync();
 			if (result != null)
 			{
-				patients = result.Select(d => new PatientViewModel
-				{
-					Id = d.Id,
-					FirstName = d.FirstName,
-					LastName = d.LastName,
-					Address = d.Address,
-					DateOfBirth = d.DateOfBirth,
-					ContactEMail = d.ContactEMail,
-					ContactNumber = d.ContactNumber,
-					MedicalHistory = d.MedicalHistory,
-					NIC = d.NIC,
-					Role = d.Role
-				}).ToList();
+				patients = result.Select(patient => ConvertToPatientViewModel(patient)).ToList();
 			}
 			return patients;
 		}
@@ -66,25 +54,13 @@ public class PatientService : IPatientService
 	{
 		try
 		{
-			var patientView = new PatientViewModel();
 			var patient = await _patientRepository.GetPatientByIdAsync(id);
 			if (patient == null)
 			{
 				throw new KeyNotFoundException("Patient not found.");
 			}
-			patientView = new PatientViewModel
-			{
-				Id = patient.Id,
-				FirstName = patient.FirstName,
-				LastName = patient.LastName,
-				Address = patient.Address,
-				DateOfBirth = patient.DateOfBirth,
-				ContactEMail = patient.ContactEMail,
-				ContactNumber = patient.ContactNumber,
-				MedicalHistory = patient.MedicalHistory,
-				NIC = patient.NIC,
-				Role = patient.Role
-			};
+			var patientView = new PatientViewModel();
+			patientView = ConvertToPatientViewModel(patient);
 			return patientView;
 		}
 		catch (Exception ex)
@@ -92,7 +68,7 @@ public class PatientService : IPatientService
 			throw new InvalidOperationException("Patient retrieval failed.", ex);
 		}
 	}
-	public async Task<Patient> AddPatientAsync(PatientInsertModel patientModel) 
+	public async Task<PatientViewModel> AddPatientAsync(PatientInsertModel patientModel) 
 	{
 		try
 		{
@@ -115,8 +91,11 @@ public class PatientService : IPatientService
 				MedicalHistory = patientModel.MedicalHistory,
 
 			};
-			var result = await _patientRepository.AddPatientAsync(patient);
-			return result;
+			patient = await _patientRepository.AddPatientAsync(patient);
+
+			var patientView = new PatientViewModel();
+			patientView = ConvertToPatientViewModel(patient);
+			return patientView;
 		}
 		catch (Exception ex)
 		{
@@ -124,7 +103,7 @@ public class PatientService : IPatientService
 		}
 	}
 
-	public async Task<Patient> UpdatePatientAsync(PatientUpdateModel patientModel)
+	public async Task<PatientViewModel> UpdatePatientAsync(PatientUpdateModel patientModel)
 	{
 		try
 		{
@@ -145,7 +124,10 @@ public class PatientService : IPatientService
 
 			await _patientRepository.UpdatePatientAsync(patient);
 
-			return patient;
+
+			var patientView = new PatientViewModel();
+			patientView = ConvertToPatientViewModel(patient);
+			return patientView;
 		}
 		catch (Exception ex)
 		{
@@ -168,5 +150,22 @@ public class PatientService : IPatientService
 		{
 			throw new InvalidOperationException("Patient deletion failed.", ex);
 		}
+	}
+
+	private PatientViewModel ConvertToPatientViewModel(Patient patient)
+	{
+		return new PatientViewModel
+		{
+			Id = patient.Id,
+			FirstName = patient.FirstName,
+			LastName = patient.LastName,
+			Address = patient.Address,
+			DateOfBirth = patient.DateOfBirth,
+			ContactEMail = patient.ContactEMail,
+			ContactNumber = patient.ContactNumber,
+			MedicalHistory = patient.MedicalHistory,
+			NIC = patient.NIC,
+			Role = patient.Role
+		};
 	}
 }

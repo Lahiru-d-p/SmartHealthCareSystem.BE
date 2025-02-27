@@ -12,9 +12,9 @@ public interface IPatientService
 	//Get Patient By Id
 	Task<PatientViewModel> GetPatientByIdAsync(int id);
 	//Add Patient
-	Task<Patient> AddPatientAsync(PatientInsertModel patient);
+	Task<PatientViewModel> AddPatientAsync(PatientInsertModel patient);
 	//Update Patient
-	Task<Patient> UpdatePatientAsync(PatientUpdateModel patient);
+	Task<PatientViewModel> UpdatePatientAsync(PatientUpdateModel patient);
 	//Delete Patient
 	Task DeletePatientAsync(int id);
 }
