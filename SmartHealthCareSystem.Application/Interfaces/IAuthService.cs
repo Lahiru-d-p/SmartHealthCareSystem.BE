@@ -4,6 +4,6 @@ namespace SmartHealthCareSystem.Application.Interfaces
 {
     public interface IAuthService
 	{
-		Task LoginAsync(LoginRequestModel loginRequest);
+		Task<LoginResponseModel> LoginAsync(LoginRequestModel loginRequest);
 	}
 }

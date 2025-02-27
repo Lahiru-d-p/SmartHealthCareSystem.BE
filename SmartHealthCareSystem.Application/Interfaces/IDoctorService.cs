@@ -4,12 +4,19 @@ using SmartHealthCareSystem.Domain.Entities;
 namespace SmartHealthCareSystem.Application.Interfaces
 {
     public interface IDoctorService
-    {
-		Task<Doctor> GetDoctorByIdAsync(int id);
-		Task<bool> IsDoctorWithEmailAsync(string email);
-		Task<IEnumerable<Doctor>> GetAllDoctorsAsync();
-		Task<Doctor> AddDoctorAsync(DoctorInsertModel doctor, string hashedPassword);
-		Task UpdateDoctorAsync(Doctor doctor);
+	{
+		//Get All Doctors Details
+		Task<List<DoctorViewModel>> GetAllDoctorsAsync();
+
+		//Get All Doctors List
+		Task<List<UserListModel>> GetAllDoctorsListAsync();
+		//Get Doctor By Id
+		Task<DoctorViewModel> GetDoctorByIdAsync(int id);
+		//Add Doctor
+		Task<Doctor> AddDoctorAsync(DoctorInsertModel doctor);
+		//Update Doctor
+		Task<Doctor> UpdateDoctorAsync(DoctorUpdateModel doctor);
+		//Delete Doctor
 		Task DeleteDoctorAsync(int id);
 	}
 }

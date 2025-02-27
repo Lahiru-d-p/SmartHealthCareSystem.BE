@@ -14,15 +14,27 @@ public class PatientService : IPatientService
     {
         _patientRepository = patientRepository;
 	}
-	public async Task<List<Patient>> GetAllPatientsAsync()
+	public async Task<List<PatientViewModel>> GetAllPatientsAsync()
 	{
 		try
 		{
-			var patients = new List<Patient>();
+			var patients = new List<PatientViewModel>();
 			var result = await _patientRepository.GetAllPatientsAsync();
 			if (result != null)
 			{
-				patients = result.ToList();
+				patients = result.Select(d => new PatientViewModel
+				{
+					Id = d.Id,
+					FirstName = d.FirstName,
+					LastName = d.LastName,
+					Address = d.Address,
+					DateOfBirth = d.DateOfBirth,
+					ContactEMail = d.ContactEMail,
+					ContactNumber = d.ContactNumber,
+					MedicalHistory = d.MedicalHistory,
+					NIC = d.NIC,
+					Role = d.Role
+				}).ToList();
 			}
 			return patients;
 		}
@@ -50,16 +62,30 @@ public class PatientService : IPatientService
 		}
 	}
 
-	public async Task<Patient> GetPatientByIdAsync(int id)
+	public async Task<PatientViewModel> GetPatientByIdAsync(int id)
 	{
 		try
 		{
+			var patientView = new PatientViewModel();
 			var patient = await _patientRepository.GetPatientByIdAsync(id);
 			if (patient == null)
 			{
 				throw new KeyNotFoundException("Patient not found.");
 			}
-			return patient;
+			patientView = new PatientViewModel
+			{
+				Id = patient.Id,
+				FirstName = patient.FirstName,
+				LastName = patient.LastName,
+				Address = patient.Address,
+				DateOfBirth = patient.DateOfBirth,
+				ContactEMail = patient.ContactEMail,
+				ContactNumber = patient.ContactNumber,
+				MedicalHistory = patient.MedicalHistory,
+				NIC = patient.NIC,
+				Role = patient.Role
+			};
+			return patientView;
 		}
 		catch (Exception ex)
 		{

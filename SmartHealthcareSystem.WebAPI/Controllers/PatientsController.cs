@@ -21,11 +21,11 @@ namespace SmartHealthcareSystem.WebAPI.Controllers
 		public async Task<IActionResult> GetAllPatients()
 		{
 			var patients = await _patientService.GetAllPatientsAsync();
-			return Ok(new ResponseModel<List<Patient>>(true, "Patients retrieved successfully.", patients));
+			return Ok(new ResponseModel<List<PatientViewModel>>(true, "Patients retrieved successfully.", patients));
 		}
 
 		//Get All Patients List
-		[HttpGet]
+		[HttpGet("patients_list")]
 		public async Task<IActionResult> GetAllPatientsList()
 		{
 			var patientsList = await _patientService.GetAllPatientsListAsync();
@@ -37,7 +37,7 @@ namespace SmartHealthcareSystem.WebAPI.Controllers
 		public async Task<IActionResult> GetPatientById(int id)
 		{
 			var patient = await _patientService.GetPatientByIdAsync(id);
-			return Ok(new ResponseModel<Patient>(true, "Patient  retrieved successfully.", patient));			
+			return Ok(new ResponseModel<PatientViewModel>(true, "Patient  retrieved successfully.", patient));			
 		}
 
 		//Add Patient

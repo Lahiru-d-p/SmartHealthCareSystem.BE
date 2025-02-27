@@ -20,12 +20,20 @@ namespace SmartHealthCareSystem.Infrastructure.Repositories
 			return await _context.Doctors.AnyAsync(u => u.ContactEMail == email);
 		}		
 		public async Task<IEnumerable<Doctor>> GetAllDoctorsAsync() => await _context.Doctors.ToListAsync();
-		public async Task<Doctor> AddDoctorAsync(Doctor doctor) { await _context.Doctors.AddAsync(doctor); await _context.SaveChangesAsync(); return doctor; }
-		public async Task UpdateDoctorAsync(Doctor doctor) { _context.Doctors.Update(doctor); await _context.SaveChangesAsync(); }
-		public async Task DeleteDoctorAsync(int id)
+		public async Task<Doctor> AddDoctorAsync(Doctor doctor) 
 		{
-			var doctor = await _context.Doctors.FindAsync(id);
-			if (doctor != null) _context.Doctors.Remove(doctor);
+			await _context.Doctors.AddAsync(doctor); 
+			await _context.SaveChangesAsync(); 
+			return doctor; 
+		}
+		public async Task UpdateDoctorAsync(Doctor doctor) 
+		{ 
+			_context.Doctors.Update(doctor);
+			await _context.SaveChangesAsync(); 
+		}
+		public async Task DeleteDoctorAsync(Doctor doctor)
+		{			
+			_context.Doctors.Remove(doctor);
 			await _context.SaveChangesAsync();
 		}
 	}

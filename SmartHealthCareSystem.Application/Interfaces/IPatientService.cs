@@ -6,11 +6,11 @@ namespace SmartHealthCareSystem.Application.Interfaces;
 public interface IPatientService
 {
 	//Get All Patients Details
-	Task<List<Patient>> GetAllPatientsAsync();
+	Task<List<PatientViewModel>> GetAllPatientsAsync();
 	//Get All Patients List
 	Task<List<UserListModel>> GetAllPatientsListAsync();
 	//Get Patient By Id
-	Task<Patient> GetPatientByIdAsync(int id);
+	Task<PatientViewModel> GetPatientByIdAsync(int id);
 	//Add Patient
 	Task<Patient> AddPatientAsync(PatientInsertModel patient);
 	//Update Patient

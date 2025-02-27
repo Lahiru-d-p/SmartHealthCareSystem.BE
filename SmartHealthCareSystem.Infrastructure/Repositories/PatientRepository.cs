@@ -23,7 +23,8 @@ public class PatientRepository :IPatientRepository
 	public async Task<Patient> AddPatientAsync(Patient patient) 
 	{
 		await _context.Patients.AddAsync(patient); 
-		await _context.SaveChangesAsync(); return patient; 
+		await _context.SaveChangesAsync(); 
+		return patient; 
 	}
 	public async Task UpdatePatientAsync(Patient patient)
 	{

@@ -9,6 +9,6 @@ namespace SmartHealthCareSystem.Domain.Interfaces
 		Task<IEnumerable<Doctor>> GetAllDoctorsAsync();
 		Task<Doctor> AddDoctorAsync(Doctor doctor);
 		Task UpdateDoctorAsync(Doctor doctor);
-		Task DeleteDoctorAsync(int id);
+		Task DeleteDoctorAsync(Doctor doctor);
 	}
 }

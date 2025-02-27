@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartHealthCareSystem.Application.DTOs;
 using SmartHealthCareSystem.Application.Interfaces;
-using SmartHealthCareSystem.Common.Utilities;
 using SmartHealthCareSystem.Domain.Entities;
 
 namespace SmartHealthcareSystem.WebAPI.Controllers
@@ -17,41 +16,66 @@ namespace SmartHealthcareSystem.WebAPI.Controllers
 			_doctorService = doctorService;
 		}
 
+		//Get All Doctors Details
 		[HttpGet]
-		public async Task<IActionResult> GetAllDoctors() => Ok(await _doctorService.GetAllDoctorsAsync());
+		public async Task<IActionResult> GetAllDoctors()
+		{
+			var doctors = await _doctorService.GetAllDoctorsAsync();
+			return Ok(new ResponseModel<List<DoctorViewModel>>(true, "Doctors retrieved successfully.", doctors));
+		}
 
+		//Get All Doctors List
+		[HttpGet("doctors_list")]
+		public async Task<IActionResult> GetAllDoctorsList()
+		{
+			var doctorsList = await _doctorService.GetAllDoctorsListAsync();
+			return Ok(new ResponseModel<List<UserListModel>>(true, "Doctors List retrieved successfully.", doctorsList));
+		}
+
+		//Get Doctor By Id
 		[HttpGet("{id}")]
-		public async Task<IActionResult> GetDoctorById(int id) => Ok(await _doctorService.GetDoctorByIdAsync(id));
+		public async Task<IActionResult> GetDoctorById(int id)
+		{
+			var doctor = await _doctorService.GetDoctorByIdAsync(id);
+			return Ok(new ResponseModel<DoctorViewModel>(true, "Doctor retrieved successfully.", doctor));
+		}
 
-
+		//Add Doctor
 		[HttpPost]
 		public async Task<IActionResult> AddDoctor([FromBody] DoctorInsertModel doctorModel)
 		{
-			if (await _doctorService.IsDoctorWithEmailAsync(doctorModel.ContactEMail))
+			if (!ModelState.IsValid)
 			{
-				return BadRequest("Email already exists.");
+				return BadRequest(new ResponseModel<object>(false, "Invalid request.", ModelState.Values.SelectMany(v => v.Errors)));
 			}
-			var hashedPassword = PasswordHasherHelper.HashPassword(doctorModel.Password);
-			var doctor = await _doctorService.AddDoctorAsync(doctorModel, hashedPassword);
-			return CreatedAtAction(nameof(GetDoctorById), new { id = doctor.Id }, doctor);
+
+			var InsertedDoctor = await _doctorService.AddDoctorAsync(doctorModel);
+
+			return Ok(new ResponseModel<Doctor>(true, "Doctor Inserted successfully.", InsertedDoctor));
 		}
 
-		[HttpPut("{id}")]
-		public async Task<IActionResult> UpdateDoctor(int id, [FromBody] Doctor doctor)
+		//Update Doctor
+		[HttpPut]
+		public async Task<IActionResult> UpdateDoctor([FromBody] DoctorUpdateModel doctorModel)
 		{
-			if (id != doctor.Id) return BadRequest();
-			await _doctorService.UpdateDoctorAsync(doctor);
-			return NoContent();
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(new ResponseModel<object>(false, "Invalid request.", ModelState.Values.SelectMany(v => v.Errors)));
+			}
+
+			var updatedDoctor = await _doctorService.UpdateDoctorAsync(doctorModel);
+
+			return Ok(new ResponseModel<Doctor>(true, "Doctor updated successfully.", updatedDoctor));
 		}
 
+		//Delete Doctor
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteDoctor(int id)
 		{
 			await _doctorService.DeleteDoctorAsync(id);
-			return NoContent();
+
+			return Ok(new ResponseModel<object>(true, "Doctor deleted successfully.", null));
 		}
-
-
-
+		
 	}
 }
