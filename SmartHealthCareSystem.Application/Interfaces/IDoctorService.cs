@@ -18,5 +18,10 @@ namespace SmartHealthCareSystem.Application.Interfaces
 		Task<DoctorViewModel> UpdateDoctorAsync(DoctorUpdateModel doctor);
 		//Delete Doctor
 		Task DeleteDoctorAsync(int id);
+		//Get Doctor Available Time Slotes By Doctor Id
+		Task<List<AllAvailableSlotesViewModel>> GetAllAvailableTimeSlotesByDoctorIdAsync(int id);
+		Task<AllAvailableSlotesViewModel> AddAvailableTimeSloteAsync(DoctorTimeSloteInsertModel model);
+		Task<AllAvailableSlotesViewModel> UpdateAvailableTimeSloteAsync(DoctorTimeSloteUpdateModel model);
+		Task DeleteAvailableTimeSloteAsync(int id);
 	}
 }

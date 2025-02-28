@@ -93,5 +93,28 @@ namespace SmartHealthCareSystem.Application.DTOs
 		public string ClinicAddress { get; set; }
 
 	}
+	public class AvailableSlotesViewModel
+	{
+		public DayOfWeek DayOfWeek { get; set; }
+		public TimeSpan StartTime { get; set; }
+		public TimeSpan EndTime { get; set; }
+	}
+	public class AllAvailableSlotesViewModel : AvailableSlotesViewModel
+	{
+		public int Id { get; set; }
+		public int DoctorId { get; set; }
+	}
 
+	public class DoctorTimeSloteInsertModel
+	{
+		public int DoctorId { get; set; }
+		public DayOfWeek DayOfWeek { get; set; }
+		public TimeSpan StartTime { get; set; }
+		public TimeSpan EndTime { get; set; }
+	}
+
+	public class DoctorTimeSloteUpdateModel: DoctorTimeSloteInsertModel
+	{
+		public int Id { get; set; }
+	}
 }

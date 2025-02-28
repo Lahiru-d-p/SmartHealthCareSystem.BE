@@ -154,6 +154,101 @@ public class DoctorService : IDoctorService
 		}
 	}
 
+	public async Task<List<AllAvailableSlotesViewModel>> GetAllAvailableTimeSlotesByDoctorIdAsync(int id)
+	{
+		try
+		{
+			var times = new List<AllAvailableSlotesViewModel>();
+			var result = await _doctorRepository.GetAllAvailableTimeSlotesByDoctorIdAsync(id);
+			if (result != null)
+			{
+				times = result.Select(slot => ConvertToAllAvailableSlotesViewModel(slot)).ToList();
+			}
+			return times;
+		}
+		catch (Exception ex)
+		{
+			throw new InvalidOperationException("Time Slotes retrieval failed.", ex);
+		}
+
+	}
+
+	public async Task<AllAvailableSlotesViewModel> AddAvailableTimeSloteAsync(DoctorTimeSloteInsertModel model)
+	{
+		try
+		{
+			if (await _doctorRepository.IsTimeSloteOverlappingAsync(model.DoctorId,model.DayOfWeek,model.StartTime,model.EndTime))
+			{
+				throw new InvalidOperationException("Time Slote is overlpping.");
+			}
+
+			var item = new DoctorAvailability
+			{
+				FK_DoctorId = model.DoctorId,
+				DayOfWeek = model.DayOfWeek,
+				StartTime = model.StartTime,
+				EndTime = model.EndTime
+			};
+			item = await _doctorRepository.AddDoctorAvailableSlotAsync(item);
+
+			var slotesView = new AllAvailableSlotesViewModel();
+			slotesView = ConvertToAllAvailableSlotesViewModel(item);
+			return slotesView;
+		}
+		catch (Exception ex)
+		{
+			throw new InvalidOperationException("Time Slote Insert failed.", ex);
+		}
+	}
+	public async Task<AllAvailableSlotesViewModel> UpdateAvailableTimeSloteAsync(DoctorTimeSloteUpdateModel model)
+	{
+		try
+		{
+			var availability = await _doctorRepository.GetDoctorAvailabilityByIdAsync(model.Id);
+			if (availability == null)
+			{
+				throw new KeyNotFoundException("Time Slote not found.");
+			}
+			else if (availability.FK_DoctorId!=model.DoctorId)
+			{
+				throw new InvalidOperationException("Assigned doctor cant be changed.");
+			}
+
+			availability.DayOfWeek = model.DayOfWeek;
+			availability.StartTime = model.StartTime;
+			availability.EndTime = model.EndTime;
+
+			await _doctorRepository.UpdateDoctorAvailableSlotAsync(availability);
+
+
+			var slotesView = new AllAvailableSlotesViewModel();
+			slotesView = ConvertToAllAvailableSlotesViewModel(availability);
+			return slotesView;
+		}
+		catch (Exception ex)
+		{
+			throw new InvalidOperationException("Time Slote update failed.", ex);
+		}
+	}
+
+	public async Task DeleteAvailableTimeSloteAsync(int id)
+	{
+		try
+		{
+			var availability = await _doctorRepository.GetDoctorAvailabilityByIdAsync(id);
+			if (availability == null)
+			{
+				throw new KeyNotFoundException("Time Slote not found.");
+			}
+
+			await _doctorRepository.DeleteDoctorAvailableSlotAsync(availability);
+		}
+		catch (Exception ex)
+		{
+			throw new InvalidOperationException("Time Slote deletion failed.", ex);
+		}
+	}
+	#region Helper methods
 	private DoctorViewModel ConvertToDoctorViewModel(Doctor doctor)
 	{
 		return new DoctorViewModel
@@ -171,4 +266,17 @@ public class DoctorService : IDoctorService
 			Specialty = doctor.Specialty
 		};
 	}
+	private AllAvailableSlotesViewModel ConvertToAllAvailableSlotesViewModel(DoctorAvailability doctorAvailability)
+	{
+		return new AllAvailableSlotesViewModel
+		{
+			Id = doctorAvailability.Id,
+			DoctorId = doctorAvailability.FK_DoctorId,
+			DayOfWeek = doctorAvailability.DayOfWeek,
+			StartTime  = doctorAvailability.StartTime,
+			EndTime = doctorAvailability.EndTime
+		};
+	}
+
+	#endregion
 }
