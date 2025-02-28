@@ -87,7 +87,7 @@ namespace SmartHealthcareSystem.WebAPI.Controllers
 		}
 
 		//Add Doctor Available Time Slote
-		[HttpPost]
+		[HttpPost("available_time")]
 		public async Task<IActionResult> AddDoctorAvailableTimeSlote([FromBody] DoctorTimeSloteInsertModel doctorModel)
 		{
 			if (!ModelState.IsValid)
@@ -101,7 +101,7 @@ namespace SmartHealthcareSystem.WebAPI.Controllers
 		}
 
 		//Update Doctor Available Time Slote
-		[HttpPut]
+		[HttpPut("available_time")]
 		public async Task<IActionResult> UpdateDoctorAvailableTimeSlote([FromBody] DoctorTimeSloteUpdateModel doctorModel)
 		{
 			if (!ModelState.IsValid)
@@ -115,7 +115,7 @@ namespace SmartHealthcareSystem.WebAPI.Controllers
 		}
 
 		//Delete Doctor Available Time Slote
-		[HttpDelete("{id}")]
+		[HttpDelete("available_time/{id}")]
 		public async Task<IActionResult> DeleteDoctorAvailableTimeSlote(int id)
 		{
 			await _doctorService.DeleteAvailableTimeSloteAsync(id);
